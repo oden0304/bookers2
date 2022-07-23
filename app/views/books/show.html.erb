@@ -1,7 +1,18 @@
+<% if flash[:notice] %>
+  <%= flash[:notice] %>
+<% end %>
 <div class="container px-5 px-sm-0">
+  <% if @book.errors.any? %>
+    <%= @book.errors.count %>errors prohibited this obj from being saved:
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
   <div class="row">
     <div class="col-md-3">
-      <%= render "books/user_info",book:@book, user:@book.user %>
+      <%= render "books/user_info",book:@newbook, user:@book.user %>
       <div class="col-md-8 offset-md-1">
         <h2>Book detail</h2>
         <table class="table table-hover table-inverse">
@@ -16,8 +27,9 @@
           <tbody>
               <tr>
                 <td>
-                  <%= link_to user_path do %>
-                    <%= image_tag @book.user.get_profile_image(100,100) %>
+                  <%= link_to user_path(@book.user) do %>
+                    <%= image_tag @book.user.get_profile_image(100,100) %><br>
+                    <%= @book.user.name %>
                   <% end %>
                 </td>
                 <td>
